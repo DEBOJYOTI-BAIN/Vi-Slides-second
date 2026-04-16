@@ -1,58 +1,47 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
-  const [studentName, setStudentName] = useState("");
-  const [typedCode, setTypedCode] = useState("");
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (!savedUser) {
-      navigate('/');
-    } else {
-      const user = JSON.parse(savedUser);
-      setStudentName(user.name);
-    }
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.name) navigate('/');
+    setName(user.name);
   }, [navigate]);
 
-  const handleJoinSession = async () => {
-    if (typedCode.length !== 6) {
-      alert("Enter 6-digit code");
-      return;
-    }
+  const handleJoin = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/sessions/join/${typedCode}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/sessions/join/${code}`);
       localStorage.setItem('activeSession', JSON.stringify(res.data.session));
-      navigate(`/session/${typedCode}`);
-    } catch (error) {
-      alert("Invalid Code");
-    }
+      navigate(`/session/${code}`);
+    } catch (err) { alert("Invalid Code"); }
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header style={{ padding: '20px 50px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-        <h2 style={{ margin: 0, color: '#2196F3' }}>Student Portal</h2>
-        <button className="btn-3d btn-logout" onClick={() => { localStorage.removeItem('user'); navigate('/'); }}>Sign Out</button>
+    <div className="full-page">
+      <header className="navbar">
+        <h2 style={{fontWeight: 900, color: '#6c5ce7'}}>STUDENT</h2>
+        <button className="btn-3d btn-logout" onClick={() => {localStorage.clear(); navigate('/')}}>Logout</button>
       </header>
-
-      <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="glass-card" style={{ textAlign: 'center', width: '500px' }}>
-          <h1 style={{ color: '#333' }}>Hello, {studentName}!</h1>
-          <p style={{ color: '#666', marginBottom: '30px' }}>Enter the session code from your teacher:</p>
+      <main className="centered-container">
+        <div className="glass-card">
+          <h1>Hello, {name}</h1>
+          <p style={{color: '#aaa', marginBottom: '30px'}}>Enter the 6-digit access key provided by your teacher.</p>
           
           <input 
             type="text" 
             placeholder="000 000" 
-            value={typedCode}
-            onChange={(e) => setTypedCode(e.target.value)}
-            style={{ width: '100%', padding: '15px', fontSize: '32px', textAlign: 'center', borderRadius: '10px', border: '2px solid #ddd', marginBottom: '30px', letterSpacing: '5px' }}
+            value={code} 
+            onChange={(e) => setCode(e.target.value)} 
+            style={{textAlign: 'center', fontSize: '30px', letterSpacing: '10px'}}
           />
           
-          <button className="btn-3d btn-student" style={{ width: '100%', fontSize: '22px' }} onClick={handleJoinSession}>
-            Join Classroom
+          <button className="btn-3d btn-student" style={{width: '100%'}} onClick={handleJoin}>
+            Enter Classroom
           </button>
         </div>
       </main>

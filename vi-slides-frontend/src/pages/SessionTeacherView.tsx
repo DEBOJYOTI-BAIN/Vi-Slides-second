@@ -17,7 +17,7 @@ export default function SessionTeacherView() {
       <header className="navbar">
         <button className="btn-3d btn-student" onClick={() => navigate('/teacher')}>← Lobby</button>
         <h2 style={{fontWeight: 300, letterSpacing: '2px'}}>LIVE SESSION</h2>
-        <button className="btn-3d btn-logout" onClick={endSession}>Terminate 🛑</button>
+        <button className="btn-3d btn-logout" onClick={endSession}>Terminate</button>
       </header>
 
       <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
