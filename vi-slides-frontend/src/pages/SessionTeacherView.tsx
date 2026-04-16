@@ -13,24 +13,20 @@ export default function SessionTeacherView() {
   };
 
   return (
-    <div className="full-screen">
+    <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column' }}>
       <header className="navbar">
-        <button className="btn-3d btn-student" onClick={() => navigate('/teacher')}>← Dashboard</button>
-        <h2>Classroom Live</h2>
-        <button className="btn-3d btn-logout" onClick={endSession}>End Class 🛑</button>
+        <button className="btn-3d btn-student" onClick={() => navigate('/teacher')}>← Lobby</button>
+        <h2 style={{fontWeight: 300, letterSpacing: '2px'}}>LIVE SESSION</h2>
+        <button className="btn-3d btn-logout" onClick={endSession}>Terminate 🛑</button>
       </header>
 
-      <main className="centered-content" style={{flexDirection: 'column', justifyContent: 'flex-start', paddingTop: '40px'}}>
-        <div className="glass-card" style={{maxWidth: '800px'}}>
-          <p style={{color: '#666', margin: 0}}>Student Join Code:</p>
-          <h1 className="join-code" style={{fontSize: '80px', margin: '10px 0'}}>{code}</h1>
+      <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="glass-card" style={{maxWidth: '900px'}}>
+          <p style={{color: '#aaa', textTransform: 'uppercase', fontSize: '14px', letterSpacing: '3px'}}>Access Key</p>
+          <h1 className="join-code-text">{code}</h1>
           
-          {/* NEW SECTION: THE QUESTION FEED */}
-          <div className="question-area">
-            <h3 style={{marginTop: 0, color: '#333'}}>Real-time Questions:</h3>
-            <div className="question-card-mini">
-              <p style={{margin: 0, color: '#888', fontStyle: 'italic'}}>Waiting for students to ask questions...</p>
-            </div>
+          <div style={{marginTop: '30px', padding: '20px', background: 'rgba(0,210,255,0.1)', borderRadius: '15px', color: '#00d2ff'}}>
+             <strong>Awaiting student interaction...</strong>
           </div>
         </div>
       </main>

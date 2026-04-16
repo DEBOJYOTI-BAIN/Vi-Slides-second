@@ -1,87 +1,79 @@
-/* THE FOUNDATION */
+/* MODERN MIDNIGHT THEME */
 * { box-sizing: border-box; }
+
 html, body, #root {
-  margin: 0; padding: 0;
-  height: 100vh; width: 100vw;
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Poppins', sans-serif; /* Modern, rounded font */
+  /* New Gradient: Deep Indigo to Charcoal */
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+  color: #ffffff;
   overflow: hidden;
 }
 
-/* CONTAINERS */
-.full-screen { height: 100vh; width: 100vw; display: flex; flex-direction: column; }
-.centered-content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.glass-card {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 40px; border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-  text-align: center; width: 100%; max-width: 600px;
-}
-
-/* 3D BUTTONS */
+/* UNIQUE 3D PILL BUTTONS */
 .btn-3d {
-  padding: 15px 30px; font-size: 18px; font-weight: 700;
-  color: white; border: none; border-radius: 12px;
-  cursor: pointer; transition: all 0.1s;
-  transform: translateY(-4px);
-  box-shadow: 0 6px 0 rgba(0,0,0,0.2);
-}
-.btn-3d:active { transform: translateY(0px); box-shadow: none; }
-
-.btn-teacher { background: #4CAF50; box-shadow: 0 6px 0 #2e7d32; }
-.btn-student { background: #2196F3; box-shadow: 0 6px 0 #1565c0; }
-.btn-logout  { background: #f44336; box-shadow: 0 6px 0 #b71c1c; }
-
-/* NAVBAR */
-.navbar {
-  height: 80px; background: white;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* TEXT STYLES */
-.join-code {
-  font-size: 120px; color: #007bff; 
-  font-weight: 900; margin: 20px 0; letter-spacing: 15px;
-}
-
-/* ADD THIS TO THE BOTTOM OF index.css */
-
-/* PREVENTS TEXTAREA FROM BEING DRAGGED */
-textarea {
-  width: 100%;
-  height: 120px;
-  padding: 15px;
-  border-radius: 12px;
-  border: 2px solid #ddd;
+  all: unset;
+  display: inline-block;
+  padding: 18px 45px; /* Larger, more "pro" size */
   font-size: 16px;
-  resize: none; /* THIS IS THE FIX */
-  outline: none;
-  transition: border-color 0.2s;
-  box-sizing: border-box;
-  font-family: inherit;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
+  border-radius: 50px; /* Pill shape */
+  cursor: pointer;
+  transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateY(-6px); /* Higher lift for more 3D feel */
+  text-align: center;
 }
 
-textarea:focus {
-  border-color: #2196F3;
+/* Unique Color Palette */
+.btn-teacher { background: #00d2ff; box-shadow: 0 8px 0 #008ba3; } /* Vibrant Teal */
+.btn-student { background: #6c5ce7; box-shadow: 0 8px 0 #4834d4; } /* Electric Indigo */
+.btn-logout  { background: #ff7675; box-shadow: 0 8px 0 #d63031; } /* Soft Coral */
+
+.btn-3d:active {
+  transform: translateY(0px);
+  box-shadow: none;
 }
 
-/* THE TEACHER'S QUESTION LIST CONTAINER */
-.question-area {
-  margin-top: 30px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
-  padding: 20px;
-  min-height: 150px;
-  border: 1px solid #eee;
-  text-align: left;
+.btn-3d:hover {
+    filter: brightness(1.1);
 }
 
-.question-card-mini {
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  border-left: 5px solid #2196F3;
+/* FROSTED GLASS CARD */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05); /* Very dark glass */
+  backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: 50px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 550px;
+}
+
+/* SLEEK NAVBAR */
+.navbar {
+  height: 90px;
+  background: rgba(15, 15, 26, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.join-code-text {
+  font-size: 140px;
+  background: linear-gradient(to bottom, #ffffff, #00d2ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  margin: 10px 0;
+  filter: drop-shadow(0 10px 20px rgba(0, 210, 255, 0.3));
 }
