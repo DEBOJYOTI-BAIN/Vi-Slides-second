@@ -22,7 +22,7 @@ export default function Login() {
         localStorage.setItem('user', JSON.stringify(res.data.user));
         navigate(res.data.user.role === 'teacher' ? '/teacher' : '/student');
       }
-    } catch (err) { alert("Login Fail"); }
+    } catch (err) { alert("Login failed"); }
   };
 
   const finishLogin = async (role: 'teacher' | 'student') => {
@@ -30,27 +30,28 @@ export default function Login() {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/google-login`, { token: googleToken, role });
       localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate(role === 'teacher' ? '/teacher' : '/student');
-    } catch (err) { alert("Error"); }
+    } catch (err) { alert("Selection failed"); }
   };
 
   return (
-    <div style={{ height: '100vh', width: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="glass-card">
-        <h1 style={{fontSize: '50px', fontWeight: 900, marginBottom: '0'}}>VI-SLIDES</h1>
-        <p style={{color: '#00d2ff', letterSpacing: '4px', marginBottom: '40px'}}>ADAPTIVE LEARNING</p>
+    <div className="full-page flex-center">
+      <main className="centered-container">
+        <div className="glass-card">
+          <h1 style={{ fontSize: '48px', fontWeight: 900, marginBottom: 0 }}>VI-SLIDES</h1>
+          <p style={{ color: '#00d2ff', letterSpacing: '4px', marginBottom: '40px' }}>ADAPTIVE LEARNING</p>
 
-        {!showRoles ? (
-          <div style={{display: 'flex', justifyContent: 'center', background: 'white', padding: '10px', borderRadius: '15px'}} >
-            <GoogleLogin onSuccess={handleGoogleSuccess} onError={() => {}} />
-          </div>
-        ) : (
-          <div style={{display: 'flex', flexDirection: 'column', gap: '25px'}}>
-            <h3 style={{fontWeight: 300}}>Establish Identity</h3>
-            <button className="btn-3d btn-teacher" onClick={() => finishLogin('teacher')}>Professor</button>
-            <button className="btn-3d btn-student" onClick={() => finishLogin('student')}>Student</button>
-          </div>
-        )}
-      </div>
+          {!showRoles ? (
+            <div style={{ background: 'white', padding: '10px', borderRadius: '15px' }}>
+              <GoogleLogin onSuccess={handleGoogleSuccess} onError={() => {}} />
+            </div>
+          ) : (
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <button className="btn-3d btn-teacher" onClick={() => finishLogin('teacher')}>Professor</button>
+              <button className="btn-3d btn-student" onClick={() => finishLogin('student')}>Student</button>
+            </div>
+          )}
+        </div>
+      </main>
     </div>
   );
 }

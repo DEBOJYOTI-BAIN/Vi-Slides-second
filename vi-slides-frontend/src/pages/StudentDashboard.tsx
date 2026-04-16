@@ -24,25 +24,19 @@ export default function StudentDashboard() {
   return (
     <div className="full-page">
       <header className="navbar">
-        <h2 style={{fontWeight: 900, color: '#6c5ce7'}}>STUDENT</h2>
-        <button className="btn-3d btn-logout" onClick={() => {localStorage.clear(); navigate('/')}}>Logout</button>
+        <h2 style={{ color: '#6c5ce7', fontWeight: 900 }}>STUDENT</h2>
+        <button className="btn-3d btn-logout" style={{ width: 'auto', padding: '10px 20px' }} onClick={() => { localStorage.clear(); navigate('/'); }}>Logout</button>
       </header>
       <main className="centered-container">
         <div className="glass-card">
           <h1>Hello, {name}</h1>
-          <p style={{color: '#aaa', marginBottom: '30px'}}>Enter the 6-digit access key provided by your teacher.</p>
-          
+          <p style={{ color: '#aaa', marginBottom: '30px' }}>Enter the 6-digit class code to join.</p>
           <input 
-            type="text" 
-            placeholder="000 000" 
-            value={code} 
-            onChange={(e) => setCode(e.target.value)} 
-            style={{textAlign: 'center', fontSize: '30px', letterSpacing: '10px'}}
+            type="text" placeholder="000000" maxLength={6}
+            value={code} onChange={(e) => setCode(e.target.value)}
+            style={{ textAlign: 'center', fontSize: '32px', letterSpacing: '10px' }}
           />
-          
-          <button className="btn-3d btn-student" style={{width: '100%'}} onClick={handleJoin}>
-            Enter Classroom
-          </button>
+          <button className="btn-3d btn-student" onClick={handleJoin}>Join Session</button>
         </div>
       </main>
     </div>

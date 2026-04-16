@@ -5,28 +5,26 @@ export default function SessionTeacherView() {
   const { code } = useParams();
   const navigate = useNavigate();
 
-  const endSession = async () => {
+  const handleEnd = async () => {
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/sessions/end/${code}`);
       navigate('/teacher');
-    } catch (err) { alert("Error"); }
+    } catch (err) { alert("Error ending session"); }
   };
 
   return (
-    <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column' }}>
+    <div className="full-page">
       <header className="navbar">
-        <button className="btn-3d btn-student" onClick={() => navigate('/teacher')}>← Lobby</button>
-        <h2 style={{fontWeight: 300, letterSpacing: '2px'}}>LIVE SESSION</h2>
-        <button className="btn-3d btn-logout" onClick={endSession}>Terminate</button>
+        <button className="btn-3d btn-student" style={{ width: 'auto', padding: '10px 20px' }} onClick={() => navigate('/teacher')}>← Lobby</button>
+        <h2 style={{ fontWeight: 300 }}>SESSION ACTIVE</h2>
+        <button className="btn-3d btn-logout" style={{ width: 'auto', padding: '10px 20px' }} onClick={handleEnd}>Terminate</button>
       </header>
-
-      <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="glass-card" style={{maxWidth: '900px'}}>
-          <p style={{color: '#aaa', textTransform: 'uppercase', fontSize: '14px', letterSpacing: '3px'}}>Access Key</p>
-          <h1 className="join-code-text">{code}</h1>
-          
-          <div style={{marginTop: '30px', padding: '20px', background: 'rgba(0,210,255,0.1)', borderRadius: '15px', color: '#00d2ff'}}>
-             <strong>Awaiting student interaction...</strong>
+      <main className="centered-container">
+        <div className="glass-card" style={{ maxWidth: '800px' }}>
+          <p style={{ color: '#aaa', letterSpacing: '3px' }}>JOIN CODE</p>
+          <h1 style={{ fontSize: '120px', color: '#00d2ff', margin: '10px 0', letterSpacing: '10px' }}>{code}</h1>
+          <div style={{ marginTop: '30px', padding: '20px', background: 'rgba(0,210,255,0.05)', borderRadius: '20px', color: '#00d2ff', width: '100%' }}>
+            <strong>Waiting for student interaction...</strong>
           </div>
         </div>
       </main>
