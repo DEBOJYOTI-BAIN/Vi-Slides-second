@@ -28,11 +28,17 @@ router.post('/create', async (req, res) => {
 router.get('/join/:code', async (req, res) => {
   try {
     const { code } = req.params;
-    const session = await Session.findOne({ sessionCode: code, status: 'active' });
+    const session = await Session.findOne({ sessionCode: code });
 
     if (!session) {
-      return res.status(404).json({ message: "Invalid or inactive session code." });
+      return res.status(404).json({ message: "Session code not found. Please check and try again." });
     }
+
+    if (session.status === 'ended') {
+      return res.status(400).json({ message: "This session has already ended and is no longer available." });
+    }
+
+    // Students can join active or paused sessions
     res.json({ message: "Joined successfully", session });
   } catch (error) {
     res.status(500).json({ message: "Server error joining session" });
@@ -56,6 +62,36 @@ router.post('/end/:code', async (req, res) => {
     res.json({ message: "Session ended successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error ending session" });
+  }
+});
+
+router.post('/pause/:code', async (req, res) => {
+  try {
+    const { code } = req.params;
+    const session = await Session.findOneAndUpdate(
+      { sessionCode: code },
+      { status: 'paused' },
+      { new: true }
+    );
+    if (!session) return res.status(404).json({ message: "Session not found" });
+    res.json({ message: "Session paused", session });
+  } catch (error) {
+    res.status(500).json({ message: "Error pausing session" });
+  }
+});
+
+router.post('/resume/:code', async (req, res) => {
+  try {
+    const { code } = req.params;
+    const session = await Session.findOneAndUpdate(
+      { sessionCode: code },
+      { status: 'active' },
+      { new: true }
+    );
+    if (!session) return res.status(404).json({ message: "Session not found" });
+    res.json({ message: "Session resumed", session });
+  } catch (error) {
+    res.status(500).json({ message: "Error resuming session" });
   }
 });
 

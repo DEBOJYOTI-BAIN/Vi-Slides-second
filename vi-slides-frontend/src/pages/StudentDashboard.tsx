@@ -18,7 +18,10 @@ export default function StudentDashboard() {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/sessions/join/${code}`);
       localStorage.setItem('activeSession', JSON.stringify(res.data.session));
       navigate(`/session/${code}`);
-    } catch (err) { alert("Invalid Code"); }
+    } catch (err: any) { 
+      const message = err.response?.data?.message || "Invalid Code";
+      alert(message); 
+    }
   };
 
   return (
