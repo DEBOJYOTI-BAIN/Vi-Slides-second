@@ -217,3 +217,39 @@ textarea { resize: none; height: 120px; }
   display: block;
   margin-bottom: 5px;
 }
+
+/* ADD TO index.css */
+
+.student-tag {
+  font-size: 11px;
+  background: rgba(0, 210, 255, 0.1);
+  color: #00d2ff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.status-icon {
+  margin-left: 10px;
+  font-weight: 900;
+}
+
+.answered-text { color: #2ecc71; font-size: 12px; font-weight: 700; }
+.pending-text { color: #f1c40f; font-size: 12px; font-weight: 700; }
+
+/* THE CLIPBOARD BUTTON */
+.copy-btn {
+  background: #333;
+  color: #00d2ff;
+  border: 1px solid #00d2ff;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.copy-btn:hover { background: #00d2ff; color: #000; }
