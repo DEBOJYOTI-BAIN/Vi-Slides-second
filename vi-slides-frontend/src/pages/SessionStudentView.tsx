@@ -12,7 +12,7 @@ export default function SessionStudentView() {
   const [questions, setQuestions] = useState<any[]>([]);
   const [myIndex, setMyIndex] = useState(0);
   
-  // EXTRACTION: Ensure we get the actual name from Google login data
+  
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function SessionStudentView() {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/questions/submit`, {
         sessionCode: code, 
         studentId: user._id, 
-        studentName: user.name, // SENDS THE GOOGLE NAME
+        studentName: user.name, 
         text: q
       });
       socket.emit('new-question', { sessionCode: code, question: res.data });

@@ -38,7 +38,7 @@ router.get('/join/:code', async (req, res) => {
       return res.status(400).json({ message: "This session has already ended and is no longer available." });
     }
 
-    // Students can join active or paused sessions
+    
     res.json({ message: "Joined successfully", session });
   } catch (error) {
     res.status(500).json({ message: "Server error joining session" });

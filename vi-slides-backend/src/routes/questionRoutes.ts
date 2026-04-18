@@ -4,7 +4,7 @@ import { Session } from '../models/Session.js';
 
 const router = express.Router();
 
-// GET ALL QUESTIONS
+
 router.get('/:sessionCode', async (req, res) => {
   try {
     const { sessionCode } = req.params;
@@ -15,7 +15,7 @@ router.get('/:sessionCode', async (req, res) => {
   } catch (error) { res.status(500).json({ message: "Error" }); }
 });
 
-// SUBMIT QUESTION (FIXED TO SAVE NAME)
+
 router.post('/submit', async (req, res) => {
   try {
     const { sessionCode, studentId, studentName, text } = req.body;
@@ -25,14 +25,14 @@ router.post('/submit', async (req, res) => {
     const newQuestion = await Question.create({
       sessionId: session._id,
       studentId,
-      studentName: studentName || "Student", // SAVES THE ACTUAL NAME
+      studentName: studentName || "Student", 
       text
     });
     res.json(newQuestion);
   } catch (error) { res.status(500).json({ message: "Submit failed" }); }
 });
 
-// UPDATE FOR RESPONSE
+
 router.put('/:id', async (req, res) => {
   try {
     const { teacherResponse, isAnswered } = req.body;

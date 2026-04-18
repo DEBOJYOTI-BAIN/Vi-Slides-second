@@ -69,6 +69,7 @@ export default function SessionTeacherView() {
         <main className="main-stage">
           <div className="projector-box" onClick={() => {navigator.clipboard.writeText(code||""); alert("Copied!")}}>
             <h1 className="giant-code">{code}</h1>
+            <p className="copy-hint">Click digits to copy code</p>
           </div>
 
           <div className="glass-card session-card">
@@ -94,7 +95,7 @@ export default function SessionTeacherView() {
              <h3 style={{marginBottom: '20px'}}>Response for {activeQ.studentName}</h3>
              <textarea value={responseText} onChange={(e) => setResponseText(e.target.value)} placeholder="Type here..." />
              
-             {/* THE FIXED ALIGNMENT CONTAINER */}
+             
              <div className="modal-actions">
                 <button className="btn-3d btn-teacher" onClick={handleRespond}>Publish</button>
                 <button className="btn-3d btn-logout" onClick={() => setIsResponding(false)}>Cancel</button>

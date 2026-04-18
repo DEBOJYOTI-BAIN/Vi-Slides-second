@@ -29,7 +29,7 @@ export default function StudentDashboard() {
       </header>
 
       <main className="centered-container">
-        {/* COMPACT RECTANGULAR CARD */}
+        
         <div className="glass-card">
           <h1 style={{fontSize: '32px', marginBottom: '10px'}}>Hello, {name}</h1>
           <p style={{color: '#aaa', marginBottom: '30px', fontSize: '14px'}}>Enter access key to join classroom.</p>

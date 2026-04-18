@@ -31,7 +31,7 @@ mongoose.connect(mongoURI)
   .then(() => console.log("MongoDB Connected Successfully"))
   .catch((err) => console.error("MongoDB Connection Error:", err));
 
-// Socket.io Connection
+
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 

@@ -28,10 +28,10 @@ export default function TeacherDashboard() {
       </header>
       
       <main className="centered-container">
-        {/* COMPACT RECTANGULAR CARD */}
+        
         <div className="glass-card">
           <h1 style={{fontSize: '32px', marginBottom: '10px'}}>Welcome, {name}</h1>
-          <p style={{color: '#aaa', marginBottom: '40px', fontSize: '14px'}}>Ready to lead an adaptive class?</p>
+          <p style={{color: '#aaa', marginBottom: '40px', fontSize: '14px'}}>Start the session to lead the adaptive class</p>
           
           <button className="btn-3d btn-teacher btn-compact" onClick={handleStart}>
             + Start New Session

@@ -20,7 +20,7 @@ html, body, #root {
 
 .dashboard-layout { display: flex; height: calc(100vh - 80px); width: 100%; }
 
-/* SIDEBAR & FEED */
+
 .sidebar {
   width: 380px; background: rgba(0, 0, 0, 0.4);
   border-right: 1px solid rgba(255, 255, 255, 0.05);
@@ -36,13 +36,13 @@ html, body, #root {
 
 .feed-item.answered { border-left-color: #2ecc71; background: rgba(46, 204, 113, 0.05); }
 
-/* RESPONSE BUBBLES (IN SIDEBAR) */
+
 .peer-response {
   margin-top: 10px; padding: 10px; background: rgba(46, 204, 113, 0.1);
   border-radius: 12px; font-size: 12px; color: #2ecc71; border-left: 2px solid #2ecc71;
 }
 
-/* MAIN STAGE */
+
 .main-stage {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center; padding: 40px;
@@ -58,7 +58,7 @@ html, body, #root {
 
 .session-card { max-width: 750px; }
 
-/* 3D BUTTONS */
+
 .btn-3d {
   all: unset; display: inline-block; padding: 16px 35px;
   font-size: 14px; font-weight: 800; text-transform: uppercase;
@@ -75,7 +75,7 @@ html, body, #root {
 
 .btn-submit { max-width: 250px; width: 100%; }
 
-/* UI DECORATION */
+
 .projector-box {
   background: rgba(0, 210, 255, 0.05); border: 2px dashed rgba(0, 210, 255, 0.3);
   border-radius: 30px; padding: 15px 50px; cursor: pointer; text-align: center; margin-bottom: 25px;
@@ -98,10 +98,10 @@ textarea, input {
   border-radius: 15px; padding: 15px; color: white; resize: none; outline: none; font-family: inherit; margin-bottom: 20px;
 }
 
-/* ADD TO index.css */
+
 .modal-actions {
   display: flex;
-  flex-direction: row; /* Forces side-by-side */
+  flex-direction: row; 
   gap: 15px;
   justify-content: center;
   width: 100%;
@@ -109,6 +109,15 @@ textarea, input {
 }
 
 .modal-actions button {
-  flex: 1; /* Makes buttons equal width */
+  flex: 1; 
   max-width: 200px;
+}
+
+.copy-hint {
+  font-size: 10px;
+  color: #00d2ff;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.6;
 }
