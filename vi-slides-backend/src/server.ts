@@ -66,6 +66,11 @@ app.get('/', (req, res) => {
 });
 
 const PORT = 5000;
+
+app.get('/api/config/google-id', (req, res) => {
+  res.json({ clientId: process.env.GOOGLE_CLIENT_ID });
+});
+
 httpServer.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
