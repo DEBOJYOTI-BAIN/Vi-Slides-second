@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap');
 
-* { box-sizing: border-box; }
+
+* { 
+  box-sizing: border-box; 
+  overflow-wrap: break-word; 
+  word-wrap: break-word;
+  word-break: normal; 
+  white-space: normal;
+}
 
 html, body, #root {
   margin: 0; padding: 0;
@@ -27,11 +34,12 @@ html, body, #root {
   padding: 25px; overflow-y: auto; backdrop-filter: blur(15px);
 }
 
-.sidebar-title { font-size: 11px; letter-spacing: 2px; color: #00d2ff; text-transform: uppercase; margin-bottom: 20px; }
-
 .feed-item {
   background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 18px;
-  margin-bottom: 15px; border-left: 4px solid #6c5ce7; font-size: 13px; text-align: left;
+  margin-bottom: 15px; border-left: 4px solid #6c5ce7; font-size: 13px;
+  text-align: left;
+  display: block;
+  line-height: 1.5;
 }
 
 .feed-item.answered { border-left-color: #2ecc71; background: rgba(46, 204, 113, 0.05); }
@@ -40,6 +48,7 @@ html, body, #root {
 .peer-response {
   margin-top: 10px; padding: 10px; background: rgba(46, 204, 113, 0.1);
   border-radius: 12px; font-size: 12px; color: #2ecc71; border-left: 2px solid #2ecc71;
+  line-height: 1.4;
 }
 
 
@@ -59,6 +68,27 @@ html, body, #root {
 .session-card { max-width: 750px; }
 
 
+.glass-card h2 {
+  font-size: 28px;
+  line-height: 1.4;
+  margin: 20px 0;
+  max-width: 100%;
+}
+
+
+.response-box {
+  background: rgba(46, 204, 113, 0.1);
+  padding: 15px; border-radius: 15px; margin-top: 15px;
+  text-align: left; border-left: 3px solid #2ecc71;
+}
+
+.response-box p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
 .btn-3d {
   all: unset; display: inline-block; padding: 16px 35px;
   font-size: 14px; font-weight: 800; text-transform: uppercase;
@@ -71,10 +101,8 @@ html, body, #root {
 .btn-student { background: #6c5ce7; box-shadow: 0 6px 0 #4834d4; }
 .btn-logout  { background: #ff4757; box-shadow: 0 6px 0 #ff1f34; }
 .btn-3d:active { transform: translateY(0px); box-shadow: none; }
-.btn-3d:disabled { opacity: 0.1; cursor: not-allowed; }
 
 .btn-submit { max-width: 250px; width: 100%; }
-
 
 .projector-box {
   background: rgba(0, 210, 255, 0.05); border: 2px dashed rgba(0, 210, 255, 0.3);
@@ -83,7 +111,7 @@ html, body, #root {
 
 .giant-code { font-size: 110px; font-weight: 900; color: #00d2ff; letter-spacing: 15px; margin: 0; line-height: 1; }
 
-.copy-hint { font-size: 10px; color: #00d2ff; margin-top: 10px; text-transform: uppercase; opacity: 0.6; }
+.copy-hint { font-size: 10px; color: #00d2ff; margin-top: 8px; text-transform: uppercase; opacity: 0.6; }
 
 .navbar {
   height: 80px; padding: 0 40px; display: flex;
@@ -96,28 +124,4 @@ html, body, #root {
 textarea, input {
   width: 100%; background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(0, 210, 255, 0.2);
   border-radius: 15px; padding: 15px; color: white; resize: none; outline: none; font-family: inherit; margin-bottom: 20px;
-}
-
-
-.modal-actions {
-  display: flex;
-  flex-direction: row; 
-  gap: 15px;
-  justify-content: center;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.modal-actions button {
-  flex: 1; 
-  max-width: 200px;
-}
-
-.copy-hint {
-  font-size: 10px;
-  color: #00d2ff;
-  margin-top: 8px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  opacity: 0.6;
 }
