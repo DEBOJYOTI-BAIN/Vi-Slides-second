@@ -195,3 +195,25 @@ textarea { resize: none; height: 120px; }
 }
 .active-status { background: #2ecc71; color: #000; }
 .paused-status { background: #f1c40f; color: #000; }
+
+/* ADD TO index.css */
+.answered-border { border-left: 4px solid #2ecc71 !important; }
+.unanswered-border { border-left: 4px solid #f1c40f !important; }
+
+.response-box {
+  background: rgba(46, 204, 113, 0.1);
+  padding: 15px;
+  border-radius: 15px;
+  margin-top: 15px;
+  text-align: left;
+  border-left: 3px solid #2ecc71;
+}
+
+.response-label {
+  font-size: 10px;
+  font-weight: 900;
+  color: #2ecc71;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 5px;
+}

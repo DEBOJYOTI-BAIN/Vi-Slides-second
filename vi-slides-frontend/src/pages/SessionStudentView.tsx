@@ -10,81 +10,89 @@ export default function SessionStudentView() {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [questions, setQuestions] = useState<any[]>([]);
-  const [sessionStatus, setSessionStatus] = useState("active");
+  const [myIndex, setMyIndex] = useState(0);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   useEffect(() => {
-    if (!user.name) navigate('/');
     fetchQuestions();
-    fetchSessionStatus();
     socket.emit('join-session', code);
-    socket.on('question-added', (newQ) => setQuestions(prev => [...prev, newQ]));
-    socket.on('session-status-changed', (status) => {
-      setSessionStatus(status);
-      if (status === 'ended') { alert("Session Terminated"); navigate('/student'); }
+    socket.on('question-added', (newQ) => setQuestions((prev) => [...prev, newQ]));
+    // CRITICAL: This reflects the teacher's answer in the student's sidebar and carousel instantly
+    socket.on('question-updated', (updatedQ) => {
+      setQuestions((prev) => prev.map(item => item._id === updatedQ._id ? updatedQ : item));
     });
-    return () => { socket.off('question-added'); socket.off('session-status-changed'); };
+    return () => { socket.off(); };
   }, [code]);
 
   const fetchQuestions = async () => {
-    try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/questions/${code}`);
-      setQuestions(res.data);
-    } catch (e) {}
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/questions/${code}`);
+    setQuestions(res.data);
   };
-
-  const fetchSessionStatus = async () => {
-    try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/sessions/join/${code}`);
-      setSessionStatus(res.data.session.status);
-    } catch (e) {}
-  }
 
   const handleSubmit = async () => {
-    if (!q.trim() || sessionStatus === 'paused') return;
-    try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/questions/submit`, {
-        sessionCode: code, studentId: user._id, text: q
-      });
-      socket.emit('new-question', { sessionCode: code, question: res.data });
-      setQ("");
-    } catch (err) { alert("Submit Failed"); }
+    if (!q.trim()) return;
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/questions/submit`, {
+      sessionCode: code, studentId: user._id, text: q
+    });
+    socket.emit('new-question', { sessionCode: code, question: res.data });
+    setQ("");
+    setMyIndex(0); // View the newest question
   };
+
+  const myQs = questions.filter(item => item.studentId === user._id).reverse();
+  const activeMyQ = myQs[myIndex];
 
   return (
     <div className="full-page">
       <header className="navbar">
-        <button className="btn-3d btn-logout" style={{padding: '10px 20px'}} onClick={() => navigate('/student')}>Exit</button>
-        <h2 style={{fontWeight: 900}}>LIVE SESSION: {code}</h2>
-        <div style={{padding: '5px 15px', borderRadius: '20px', background: sessionStatus === 'active' ? '#2ecc71' : '#f1c40f', fontSize: '10px', fontWeight: 900}}>
-          {sessionStatus.toUpperCase()}
-        </div>
+        <button className="btn-3d btn-logout" onClick={() => navigate('/student')}>Exit</button>
+        <h2 style={{fontWeight: 900}}>STUDENT PORTAL</h2>
+        <div style={{width: '80px'}}></div>
       </header>
 
-      <main className="centered-container">
-        <div className="glass-card" style={{maxWidth: '500px', opacity: sessionStatus === 'paused' ? 0.6 : 1}}>
-          <h2 style={{color: '#00d2ff', marginBottom: '20px'}}>Ask Question</h2>
-          <textarea 
-            placeholder={sessionStatus === 'active' ? "What is your query?" : "Submissions Paused"}
-            disabled={sessionStatus === 'paused'}
-            value={q} onChange={(e) => setQ(e.target.value)}
-            style={{height: '120px'}}
-          />
-          <button className="btn-3d btn-student" style={{marginTop: '20px'}} onClick={handleSubmit}>Submit to Professor</button>
-          
-          <div style={{marginTop: '30px', textAlign: 'left', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px'}}>
-            <p style={{fontSize: '10px', color: '#555', textTransform: 'uppercase'}}>My Session Feed</p>
-            <div style={{maxHeight: '150px', overflowY: 'auto'}}>
-               {questions.filter(item => item.studentId === user._id).map((item, i) => (
-                 <div key={i} style={{fontSize: '13px', marginBottom: '10px', padding: '10px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px'}}>
-                   <p style={{margin: 0}}>{item.text}</p>
-                   {item.isAnswered && <p style={{margin: '5px 0 0 0', color: '#2ecc71', fontSize: '11px'}}>✓ {item.teacherResponse}</p>}
-                 </div>
-               ))}
+      <div className="dashboard-layout">
+        {/* SIDE PANEL: ALL QUESTIONS FROM EVERYONE */}
+        <aside className="sidebar">
+          <p className="sidebar-title">Class Activity</p>
+          {questions.map((item, i) => (
+            <div key={i} className={`feed-item ${item.isAnswered ? 'answered-border' : ''}`}>
+              <span style={{fontSize: '9px', color: '#555'}}>{item.studentId === user._id ? "YOU" : "PEER"}</span>
+              <p style={{margin: '5px 0'}}>{item.text}</p>
+              {item.isAnswered && <p style={{fontSize: '11px', color: '#2ecc71'}}>✓ Professor Responded</p>}
             </div>
+          ))}
+        </aside>
+
+        <main className="main-stage">
+          {/* SUBMISSION BOX */}
+          <div className="glass-card" style={{marginBottom: '20px'}}>
+            <h3>Submit Question</h3>
+            <textarea value={q} onChange={(e) => setQ(e.target.value)} placeholder="Type here..." />
+            <button className="btn-3d btn-student" onClick={handleSubmit}>Send to Professor</button>
           </div>
-        </div>
-      </main>
+
+          {/* PERSONAL CAROUSEL: MY QUESTIONS & ANSWERS */}
+          <div className="glass-card" style={{borderLeft: '10px solid #00d2ff'}}>
+            <p style={{fontSize: '10px', color: '#00d2ff', fontWeight: 900}}>MY PRIVATE LOG</p>
+            {activeMyQ ? (
+              <>
+                <p style={{margin: '15px 0', fontSize: '18px'}}>"{activeMyQ.text}"</p>
+                {activeMyQ.isAnswered && (
+                  <div className="response-box">
+                    <span className="response-label">Professor's Answer</span>
+                    <p style={{margin: 0, fontSize: '14px'}}>{activeMyQ.teacherResponse}</p>
+                  </div>
+                )}
+                <div style={{display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '20px'}}>
+                  <button disabled={myIndex === 0} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex-1)}>Prev</button>
+                  <span style={{display:'flex', alignItems:'center'}}>{myIndex + 1} / {myQs.length}</span>
+                  <button disabled={myIndex === myQs.length-1} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex+1)}>Next</button>
+                </div>
+              </>
+            ) : <p style={{color: '#555'}}>No questions asked yet.</p>}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
