@@ -20,12 +20,29 @@ html, body, #root {
 
 .dashboard-layout { display: flex; height: calc(100vh - 80px); width: 100%; }
 
+/* SIDEBAR & FEED */
 .sidebar {
-  width: 350px; background: rgba(0, 0, 0, 0.3);
+  width: 380px; background: rgba(0, 0, 0, 0.4);
   border-right: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 25px; overflow-y: auto; backdrop-filter: blur(10px);
+  padding: 25px; overflow-y: auto; backdrop-filter: blur(15px);
 }
 
+.sidebar-title { font-size: 11px; letter-spacing: 2px; color: #00d2ff; text-transform: uppercase; margin-bottom: 20px; }
+
+.feed-item {
+  background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 18px;
+  margin-bottom: 15px; border-left: 4px solid #6c5ce7; font-size: 13px; text-align: left;
+}
+
+.feed-item.answered { border-left-color: #2ecc71; background: rgba(46, 204, 113, 0.05); }
+
+/* RESPONSE BUBBLES (IN SIDEBAR) */
+.peer-response {
+  margin-top: 10px; padding: 10px; background: rgba(46, 204, 113, 0.1);
+  border-radius: 12px; font-size: 12px; color: #2ecc71; border-left: 2px solid #2ecc71;
+}
+
+/* MAIN STAGE */
 .main-stage {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center; padding: 40px;
@@ -37,11 +54,11 @@ html, body, #root {
   padding: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center; width: 100%; max-width: 500px;
-  display: flex; flex-direction: column; align-items: center;
 }
 
-.session-card { max-width: 800px; }
+.session-card { max-width: 750px; }
 
+/* 3D BUTTONS */
 .btn-3d {
   all: unset; display: inline-block; padding: 16px 35px;
   font-size: 14px; font-weight: 800; text-transform: uppercase;
@@ -56,24 +73,17 @@ html, body, #root {
 .btn-3d:active { transform: translateY(0px); box-shadow: none; }
 .btn-3d:disabled { opacity: 0.1; cursor: not-allowed; }
 
-/* THE FIX: PREVENTS OVEREXTENDED BUTTON */
-.btn-submit {
-  max-width: 250px;
-  width: 100%;
-}
+.btn-submit { max-width: 250px; width: 100%; }
 
+/* UI DECORATION */
 .projector-box {
   background: rgba(0, 210, 255, 0.05); border: 2px dashed rgba(0, 210, 255, 0.3);
-  border-radius: 30px; padding: 20px 50px; cursor: pointer; text-align: center; margin-bottom: 20px;
+  border-radius: 30px; padding: 15px 50px; cursor: pointer; text-align: center; margin-bottom: 25px;
 }
 
-.giant-code { font-size: 120px; font-weight: 900; color: #00d2ff; letter-spacing: 15px; margin: 0; line-height: 1; }
+.giant-code { font-size: 110px; font-weight: 900; color: #00d2ff; letter-spacing: 15px; margin: 0; line-height: 1; }
 
-/* NEW COPY HINT STYLE */
-.copy-hint {
-  font-size: 11px; color: #00d2ff; margin-top: 10px;
-  text-transform: uppercase; letter-spacing: 2px; opacity: 0.7;
-}
+.copy-hint { font-size: 10px; color: #00d2ff; margin-top: 10px; text-transform: uppercase; opacity: 0.6; }
 
 .navbar {
   height: 80px; padding: 0 40px; display: flex;
@@ -81,19 +91,9 @@ html, body, #root {
   background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.feed-item {
-  background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 15px;
-  margin-bottom: 15px; border-left: 4px solid #6c5ce7; font-size: 13px; text-align: left;
-}
-.feed-item.answered { border-left-color: #2ecc71; background: rgba(46, 204, 113, 0.05); }
-
-.response-box {
-  background: rgba(46, 204, 113, 0.1); padding: 15px; border-radius: 15px;
-  margin-top: 15px; text-align: left; border-left: 3px solid #2ecc71;
-}
+.student-tag { font-size: 9px; font-weight: 900; color: #00d2ff; text-transform: uppercase; margin-bottom: 5px; display: block; }
 
 textarea, input {
   width: 100%; background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(0, 210, 255, 0.2);
-  border-radius: 15px; padding: 15px; color: white; resize: none; outline: none;
-  font-family: inherit; margin-bottom: 20px;
+  border-radius: 15px; padding: 15px; color: white; resize: none; outline: none; font-family: inherit; margin-bottom: 20px;
 }

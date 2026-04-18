@@ -30,10 +30,14 @@ export default function SessionStudentView() {
     if (!q.trim()) return;
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/questions/submit`, {
-        sessionCode: code, studentId: user._id, studentName: user.name, text: q
+        sessionCode: code, 
+        studentId: user._id, 
+        studentName: user.name, // SENDS REAL NAME
+        text: q
       });
       socket.emit('new-question', { sessionCode: code, question: res.data });
       setQ("");
+      setMyIndex(0);
     } catch (err) { alert("Failed"); }
   };
 
@@ -43,42 +47,50 @@ export default function SessionStudentView() {
   return (
     <div className="full-page">
       <header className="navbar">
-        <button className="btn-3d btn-logout" onClick={() => navigate('/student')}>Exit</button>
-        <h2 style={{fontWeight: 900}}>STUDENT PORTAL</h2>
+        <button className="btn-3d btn-logout" style={{width:'auto'}} onClick={() => navigate('/student')}>Exit</button>
+        <h2 style={{fontWeight: 900}}>STUDENT PORTAL: {code}</h2>
         <div style={{width:'80px'}}></div>
       </header>
 
       <div className="dashboard-layout">
+        {/* SIDE PANEL: SEE EVERYONE'S QUESTIONS & ANSWERS */}
         <aside className="sidebar">
-          <p style={{fontSize:'10px', letterSpacing:'2px', color:'#6c5ce7'}}>GLOBAL FEED</p>
+          <p className="sidebar-title">Global Class Activity</p>
           {questions.map((item, i) => (
             <div key={i} className={`feed-item ${item.isAnswered ? 'answered' : ''}`}>
-              <span style={{fontSize:'9px', color:'#aaa', display:'block'}}>{item.studentName}</span>
+              <span className="student-tag">{item.studentName}</span>
               {item.text}
+              {item.isAnswered && <div className="peer-response">PROFESSOR: {item.teacherResponse}</div>}
             </div>
           ))}
         </aside>
 
         <main className="main-stage">
           <div className="glass-card" style={{marginBottom: '30px'}}>
-            <h3>Submit Question</h3>
-            <textarea value={q} onChange={(e) => setQ(e.target.value)} placeholder="Type here..." />
-            {/* THE FIX: btn-submit keeps this compact */}
+            <h3>Ask the Professor</h3>
+            <textarea value={q} onChange={(e) => setQ(e.target.value)} placeholder="Type your query..." />
             <button className="btn-3d btn-student btn-submit" onClick={handleSubmit}>Send</button>
           </div>
 
+          {/* PRIVATE LOG: MY QUESTIONS & ANSWERS ONLY */}
           <div className="glass-card session-card" style={{borderLeft: '10px solid #00d2ff'}}>
-            <p style={{fontSize:'10px', color:'#00d2ff', fontWeight:900}}>MY PRIVATE LOG</p>
+            <p className="sidebar-title" style={{color: '#00d2ff', fontWeight: 900}}>My Private History</p>
             {activeMyQ ? (
               <>
                 <p style={{margin: '15px 0', fontSize: '18px'}}>"{activeMyQ.text}"</p>
+                {activeMyQ.isAnswered ? (
+                  <div className="peer-response" style={{fontSize: '14px', padding: '15px'}}>
+                    <strong>ANSWER:</strong> {activeMyQ.teacherResponse}
+                  </div>
+                ) : <p style={{color: '#555', fontSize: '12px'}}>Waiting for response...</p>}
+                
                 <div style={{display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '20px'}}>
                   <button disabled={myIndex === 0} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex-1)}>Prev</button>
                   <span style={{display:'flex', alignItems:'center'}}>{myIndex + 1} / {myQs.length}</span>
                   <button disabled={myIndex === myQs.length-1} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex+1)}>Next</button>
                 </div>
               </>
-            ) : <p>No history yet.</p>}
+            ) : <p>No questions asked yet.</p>}
           </div>
         </main>
       </div>
