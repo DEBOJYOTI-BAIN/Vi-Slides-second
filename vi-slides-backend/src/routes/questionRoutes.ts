@@ -4,79 +4,43 @@ import { Session } from '../models/Session.js';
 
 const router = express.Router();
 
-// Get all questions for a session
+// GET ALL QUESTIONS
 router.get('/:sessionCode', async (req, res) => {
   try {
     const { sessionCode } = req.params;
     const session = await Session.findOne({ sessionCode });
     if (!session) return res.status(404).json({ message: "Session not found" });
-
     const questions = await Question.find({ sessionId: session._id }).sort({ createdAt: 1 });
     res.json(questions);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching questions" });
-  }
+  } catch (error) { res.status(500).json({ message: "Error" }); }
 });
 
-// Submit a new question
+// SUBMIT QUESTION (FIXED TO SAVE NAME)
 router.post('/submit', async (req, res) => {
   try {
-    const { sessionCode, studentId, text } = req.body;
+    const { sessionCode, studentId, studentName, text } = req.body;
     const session = await Session.findOne({ sessionCode });
     if (!session) return res.status(404).json({ message: "Session not found" });
-
-    if (session.status === 'paused') {
-      return res.status(403).json({ message: "Session is paused. Questions cannot be submitted." });
-    }
 
     const newQuestion = await Question.create({
       sessionId: session._id,
       studentId,
+      studentName: studentName || "Student", // SAVES THE ACTUAL NAME
       text
     });
-
     res.json(newQuestion);
-  } catch (error) {
-    res.status(500).json({ message: "Error submitting question" });
-  }
+  } catch (error) { res.status(500).json({ message: "Submit failed" }); }
 });
 
-// Update a question (Student editing OR Teacher responding)
+// UPDATE FOR RESPONSE
 router.put('/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    const { text, teacherResponse, isAnswered } = req.body;
-    
-    let updateData: any = { text, teacherResponse, isAnswered };
-    
-    // Logic: If student edits text, reset the teacher response
-    if (text) {
-      updateData.teacherResponse = "";
-      updateData.isAnswered = false;
-    }
-
-    const updatedQuestion = await Question.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true }
+    const { teacherResponse, isAnswered } = req.body;
+    const updated = await Question.findByIdAndUpdate(
+      req.params.id, { teacherResponse, isAnswered }, { new: true }
     );
-
-    if (!updatedQuestion) return res.status(404).json({ message: "Question not found" });
-    res.json(updatedQuestion);
-  } catch (error) {
-    res.status(500).json({ message: "Error updating question" });
-  }
-});
-
-// Delete a question
-router.delete('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await Question.findByIdAndDelete(id);
-    res.json({ message: "Question deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Error deleting question" });
-  }
+    res.json(updated);
+  } catch (error) { res.status(500).json({ message: "Update failed" }); }
 });
 
 export default router;

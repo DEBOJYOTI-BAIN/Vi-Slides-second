@@ -97,3 +97,18 @@ textarea, input {
   width: 100%; background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(0, 210, 255, 0.2);
   border-radius: 15px; padding: 15px; color: white; resize: none; outline: none; font-family: inherit; margin-bottom: 20px;
 }
+
+/* ADD TO index.css */
+.modal-actions {
+  display: flex;
+  flex-direction: row; /* Forces side-by-side */
+  gap: 15px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  flex: 1; /* Makes buttons equal width */
+  max-width: 200px;
+}

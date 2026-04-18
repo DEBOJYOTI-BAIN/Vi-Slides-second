@@ -11,6 +11,8 @@ export default function SessionStudentView() {
   const [q, setQ] = useState("");
   const [questions, setQuestions] = useState<any[]>([]);
   const [myIndex, setMyIndex] = useState(0);
+  
+  // EXTRACTION: Ensure we get the actual name from Google login data
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export default function SessionStudentView() {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/questions/submit`, {
         sessionCode: code, 
         studentId: user._id, 
-        studentName: user.name, // SENDS REAL NAME
+        studentName: user.name, // SENDS THE GOOGLE NAME
         text: q
       });
       socket.emit('new-question', { sessionCode: code, question: res.data });
@@ -48,14 +50,13 @@ export default function SessionStudentView() {
     <div className="full-page">
       <header className="navbar">
         <button className="btn-3d btn-logout" style={{width:'auto'}} onClick={() => navigate('/student')}>Exit</button>
-        <h2 style={{fontWeight: 900}}>STUDENT PORTAL: {code}</h2>
+        <h2 style={{fontWeight: 900}}>STUDENT PORTAL</h2>
         <div style={{width:'80px'}}></div>
       </header>
 
       <div className="dashboard-layout">
-        {/* SIDE PANEL: SEE EVERYONE'S QUESTIONS & ANSWERS */}
         <aside className="sidebar">
-          <p className="sidebar-title">Global Class Activity</p>
+          <p className="sidebar-title">Global Activity</p>
           {questions.map((item, i) => (
             <div key={i} className={`feed-item ${item.isAnswered ? 'answered' : ''}`}>
               <span className="student-tag">{item.studentName}</span>
@@ -67,30 +68,24 @@ export default function SessionStudentView() {
 
         <main className="main-stage">
           <div className="glass-card" style={{marginBottom: '30px'}}>
-            <h3>Ask the Professor</h3>
+            <h3 style={{color: '#00d2ff', marginBottom: '20px'}}>Submit Question</h3>
             <textarea value={q} onChange={(e) => setQ(e.target.value)} placeholder="Type your query..." />
             <button className="btn-3d btn-student btn-submit" onClick={handleSubmit}>Send</button>
           </div>
 
-          {/* PRIVATE LOG: MY QUESTIONS & ANSWERS ONLY */}
           <div className="glass-card session-card" style={{borderLeft: '10px solid #00d2ff'}}>
-            <p className="sidebar-title" style={{color: '#00d2ff', fontWeight: 900}}>My Private History</p>
+            <p className="sidebar-title" style={{color: '#00d2ff', fontWeight: 900}}>My Questions</p>
             {activeMyQ ? (
               <>
                 <p style={{margin: '15px 0', fontSize: '18px'}}>"{activeMyQ.text}"</p>
-                {activeMyQ.isAnswered ? (
-                  <div className="peer-response" style={{fontSize: '14px', padding: '15px'}}>
-                    <strong>ANSWER:</strong> {activeMyQ.teacherResponse}
-                  </div>
-                ) : <p style={{color: '#555', fontSize: '12px'}}>Waiting for response...</p>}
-                
+                {activeMyQ.isAnswered && <div className="peer-response" style={{fontSize: '14px', padding: '15px'}}><strong>ANSWER:</strong> {activeMyQ.teacherResponse}</div>}
                 <div style={{display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '20px'}}>
                   <button disabled={myIndex === 0} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex-1)}>Prev</button>
                   <span style={{display:'flex', alignItems:'center'}}>{myIndex + 1} / {myQs.length}</span>
                   <button disabled={myIndex === myQs.length-1} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex+1)}>Next</button>
                 </div>
               </>
-            ) : <p>No questions asked yet.</p>}
+            ) : <p>No history yet.</p>}
           </div>
         </main>
       </div>

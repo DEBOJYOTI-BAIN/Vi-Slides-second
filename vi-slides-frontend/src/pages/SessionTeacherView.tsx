@@ -50,13 +50,13 @@ export default function SessionTeacherView() {
   return (
     <div className="full-page">
       <header className="navbar">
-        <h2 style={{fontWeight: 900}}>PROFESSOR CONTROL</h2>
-        <button className="btn-3d btn-logout" onClick={handleTerminate}>Terminate Session</button>
+        <h2 style={{fontWeight: 900}}>PROFESSOR</h2>
+        <button className="btn-3d btn-logout" onClick={handleTerminate}>Terminate</button>
       </header>
 
       <div className="dashboard-layout">
         <aside className="sidebar">
-          <p className="sidebar-title">Global Feed</p>
+          <p className="sidebar-title">Global Activity</p>
           {questions.map((q, i) => (
             <div key={i} onClick={() => setActiveIndex(i)} className={`feed-item ${q.isAnswered ? 'answered' : ''}`} style={{cursor:'pointer', opacity: activeIndex === i ? 1 : 0.4}}>
               <span className="student-tag">{q.studentName}</span>
@@ -69,7 +69,6 @@ export default function SessionTeacherView() {
         <main className="main-stage">
           <div className="projector-box" onClick={() => {navigator.clipboard.writeText(code||""); alert("Copied!")}}>
             <h1 className="giant-code">{code}</h1>
-            <p className="copy-hint">Click digits to copy code</p>
           </div>
 
           <div className="glass-card session-card">
@@ -77,11 +76,7 @@ export default function SessionTeacherView() {
               <>
                 <span className="student-tag" style={{fontSize: '14px'}}>{activeQ.studentName} asks:</span>
                 <h2 style={{margin:'20px 0'}}>"{activeQ.text}"</h2>
-                {activeQ.isAnswered && (
-                  <div className="peer-response" style={{fontSize: '16px', padding: '20px'}}>
-                    <strong>YOUR ANSWER:</strong> {activeQ.teacherResponse}
-                  </div>
-                )}
+                {activeQ.isAnswered && <div className="peer-response" style={{fontSize: '16px', padding: '20px'}}><strong>YOUR ANSWER:</strong> {activeQ.teacherResponse}</div>}
                 <div style={{display:'flex', gap:'15px', justifyContent:'center', marginTop:'30px'}}>
                   <button className="btn-3d btn-student" onClick={() => {setResponseText(activeQ.teacherResponse); setIsResponding(true)}}>Respond</button>
                   <button disabled={activeIndex === 0} className="btn-3d" style={{background:'#333'}} onClick={() => setActiveIndex(activeIndex-1)}>Prev</button>
@@ -96,9 +91,11 @@ export default function SessionTeacherView() {
       {isResponding && (
         <div className="full-page" style={{position:'fixed', top:0, left:0, background:'rgba(0,0,0,0.9)', zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center'}}>
           <div className="glass-card">
-             <h3>Answering {activeQ.studentName}</h3>
-             <textarea value={responseText} onChange={(e) => setResponseText(e.target.value)} />
-             <div style={{display:'flex', gap:'10px'}}>
+             <h3 style={{marginBottom: '20px'}}>Response for {activeQ.studentName}</h3>
+             <textarea value={responseText} onChange={(e) => setResponseText(e.target.value)} placeholder="Type here..." />
+             
+             {/* THE FIXED ALIGNMENT CONTAINER */}
+             <div className="modal-actions">
                 <button className="btn-3d btn-teacher" onClick={handleRespond}>Publish</button>
                 <button className="btn-3d btn-logout" onClick={() => setIsResponding(false)}>Cancel</button>
              </div>
