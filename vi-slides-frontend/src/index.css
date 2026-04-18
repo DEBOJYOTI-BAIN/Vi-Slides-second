@@ -11,11 +11,33 @@ html, body, #root {
   overflow: hidden;
 }
 
-/* LAYOUT HELPERS */
 .full-page { height: 100vh; width: 100vw; display: flex; flex-direction: column; }
 .centered-container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
 
-/* THE PREMIUM GLASS CARD */
+/* THE GIANT PROJECTOR CODE */
+.projector-box {
+  background: rgba(0, 210, 255, 0.05);
+  border: 2px dashed rgba(0, 210, 255, 0.3);
+  border-radius: 30px;
+  padding: 10px 50px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.projector-box:hover { background: rgba(0, 210, 255, 0.1); transform: scale(1.02); }
+
+.join-code-huge {
+  font-size: 180px; /* MASSIVE SIZE */
+  font-weight: 900;
+  color: #00d2ff;
+  letter-spacing: 25px;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 0 10px 40px rgba(0, 210, 255, 0.4);
+}
+
+/* CARDS */
 .glass-card {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(25px);
@@ -23,37 +45,16 @@ html, body, #root {
   padding: 40px;
   box-shadow: 0 40px 100px rgba(0,0,0,0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
   width: 100%;
-  max-width: 500px; /* Perfectly contained width */
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-/* MODERN INPUTS & TEXTAREAS */
-input, textarea {
-  width: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  border: 2px solid rgba(0, 210, 255, 0.3);
-  border-radius: 15px;
-  padding: 15px;
-  color: white;
-  font-size: 18px;
-  outline: none;
-  transition: all 0.3s;
-  font-family: inherit;
-  margin-bottom: 20px;
-}
-input:focus, textarea:focus { border-color: #00d2ff; box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
-textarea { resize: none; height: 120px; }
-
-/* 3D PILL BUTTONS */
+/* BUTTONS */
 .btn-3d {
   all: unset;
   display: inline-block;
-  width: 100%; /* Forces button to stay inside the box */
-  padding: 15px 0;
+  padding: 15px 30px;
   font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
@@ -64,17 +65,23 @@ textarea { resize: none; height: 120px; }
   transition: all 0.1s;
   transform: translateY(-5px);
   text-align: center;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.3);
 }
 .btn-teacher { background: #00d2ff; box-shadow: 0 6px 0 #008ba3; }
 .btn-student { background: #6c5ce7; box-shadow: 0 6px 0 #4834d4; }
 .btn-logout  { background: #ff4757; box-shadow: 0 6px 0 #ff1f34; }
-
 .btn-3d:active { transform: translateY(0px); box-shadow: none; }
 
-/* NAV BAR */
 .navbar {
   height: 80px; padding: 0 40px;
   display: flex; align-items: center; justify-content: space-between;
   background: rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+textarea {
+  width: 100%; background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(0, 210, 255, 0.3);
+  border-radius: 15px; padding: 15px; color: white;
+  resize: none; outline: none; font-family: inherit;
 }
