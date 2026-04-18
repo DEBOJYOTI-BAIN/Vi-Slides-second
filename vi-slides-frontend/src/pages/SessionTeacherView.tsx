@@ -58,7 +58,7 @@ export default function SessionTeacherView() {
     <div className="full-page">
       <header className="navbar">
         <h2 style={{fontWeight: 900}}>PROFESSOR CONTROL</h2>
-        <button className="btn-3d btn-logout" onClick={handleTerminate}>Terminate Session 🛑</button>
+        <button className="btn-3d btn-logout" onClick={handleTerminate}>Terminate Session</button>
       </header>
 
       <div className="dashboard-layout">
@@ -76,7 +76,7 @@ export default function SessionTeacherView() {
         <main className="main-stage">
           <div className="projector-box" onClick={copyToClipboard}>
             <h1 className="giant-code">{code}</h1>
-            <p className="copy-hint">Click digits to copy code</p>
+            <p className="copy-hint">Click to copy code</p>
           </div>
 
           <div className="glass-card session-card">
