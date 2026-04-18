@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap');
 
-
+/* 1. GLOBAL RESET & WRAPPING */
 * { 
   box-sizing: border-box; 
   overflow-wrap: break-word; 
@@ -20,13 +20,8 @@ html, body, #root {
 
 .full-page { height: 100vh; width: 100vw; display: flex; flex-direction: column; }
 
-.centered-container {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; padding: 20px;
-}
-
+/* 2. LAYOUT: SIDEBAR & MAIN STAGE */
 .dashboard-layout { display: flex; height: calc(100vh - 80px); width: 100%; }
-
 
 .sidebar {
   width: 380px; background: rgba(0, 0, 0, 0.4);
@@ -34,29 +29,15 @@ html, body, #root {
   padding: 25px; overflow-y: auto; backdrop-filter: blur(15px);
 }
 
-.feed-item {
-  background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 18px;
-  margin-bottom: 15px; border-left: 4px solid #6c5ce7; font-size: 13px;
-  text-align: left;
-  display: block;
-  line-height: 1.5;
-}
-
-.feed-item.answered { border-left-color: #2ecc71; background: rgba(46, 204, 113, 0.05); }
-
-
-.peer-response {
-  margin-top: 10px; padding: 10px; background: rgba(46, 204, 113, 0.1);
-  border-radius: 12px; font-size: 12px; color: #2ecc71; border-left: 2px solid #2ecc71;
-  line-height: 1.4;
-}
-
-
 .main-stage {
   flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; padding: 40px;
+  align-items: center; justify-content: flex-start;
+  padding: 30px; overflow-y: auto;
 }
 
+.centered-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+
+/* 3. 3D ELEMENTS */
 .glass-card {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(25px); border-radius: 40px;
@@ -64,30 +45,7 @@ html, body, #root {
   border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center; width: 100%; max-width: 500px;
 }
-
 .session-card { max-width: 750px; }
-
-
-.glass-card h2 {
-  font-size: 28px;
-  line-height: 1.4;
-  margin: 20px 0;
-  max-width: 100%;
-}
-
-
-.response-box {
-  background: rgba(46, 204, 113, 0.1);
-  padding: 15px; border-radius: 15px; margin-top: 15px;
-  text-align: left; border-left: 3px solid #2ecc71;
-}
-
-.response-box p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
 
 .btn-3d {
   all: unset; display: inline-block; padding: 16px 35px;
@@ -96,30 +54,39 @@ html, body, #root {
   cursor: pointer; transition: all 0.1s; transform: translateY(-5px);
   text-align: center; box-shadow: 0 6px 0 rgba(0,0,0,0.3);
 }
-
 .btn-teacher { background: #00d2ff; box-shadow: 0 6px 0 #008ba3; }
 .btn-student { background: #6c5ce7; box-shadow: 0 6px 0 #4834d4; }
 .btn-logout  { background: #ff4757; box-shadow: 0 6px 0 #ff1f34; }
 .btn-3d:active { transform: translateY(0px); box-shadow: none; }
+.btn-3d:disabled { opacity: 0.1; cursor: not-allowed; }
 
-.btn-submit { max-width: 250px; width: 100%; }
-
+/* 4. GIANT CODE & COPY */
 .projector-box {
   background: rgba(0, 210, 255, 0.05); border: 2px dashed rgba(0, 210, 255, 0.3);
   border-radius: 30px; padding: 15px 50px; cursor: pointer; text-align: center; margin-bottom: 25px;
 }
-
 .giant-code { font-size: 110px; font-weight: 900; color: #00d2ff; letter-spacing: 15px; margin: 0; line-height: 1; }
+.copy-hint { font-size: 10px; color: #00d2ff; margin-top: 10px; text-transform: uppercase; opacity: 0.6; }
 
-.copy-hint { font-size: 10px; color: #00d2ff; margin-top: 8px; text-transform: uppercase; opacity: 0.6; }
+/* 5. FEEDS & RESPONSES */
+.feed-item {
+  background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 18px;
+  margin-bottom: 15px; border-left: 4px solid #6c5ce7; font-size: 13px; text-align: left;
+}
+.feed-item.answered { border-left-color: #2ecc71; background: rgba(46, 204, 113, 0.05); }
+
+.response-box {
+  background: rgba(46, 204, 113, 0.1); padding: 15px; border-radius: 15px;
+  margin-top: 15px; text-align: left; border-left: 3px solid #2ecc71;
+}
+
+.student-tag { font-size: 9px; font-weight: 900; color: #00d2ff; text-transform: uppercase; margin-bottom: 5px; display: block; }
 
 .navbar {
   height: 80px; padding: 0 40px; display: flex;
   align-items: center; justify-content: space-between;
   background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
-
-.student-tag { font-size: 9px; font-weight: 900; color: #00d2ff; text-transform: uppercase; margin-bottom: 5px; display: block; }
 
 textarea, input {
   width: 100%; background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(0, 210, 255, 0.2);
