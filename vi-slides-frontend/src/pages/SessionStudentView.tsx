@@ -14,26 +14,35 @@ export default function SessionStudentView() {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   useEffect(() => {
+    const fetchQuestions = async () => {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/questions/${code}`);
+      setQuestions(res.data);
+    };
     fetchQuestions();
     socket.emit('join-session', code);
     socket.on('question-added', (newQ) => setQuestions((prev) => [...prev, newQ]));
     socket.on('question-updated', (upQ) => setQuestions((prev) => prev.map(item => item._id === upQ._id ? upQ : item)));
-    return () => { socket.off(); };
-  }, [code]);
+    
+    socket.on('session-status-changed', (status) => {
+      if (status === 'ended') {
+        alert("Professor has terminated the session.");
+        navigate('/student');
+      }
+    });
 
-  const fetchQuestions = async () => {
-    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/questions/${code}`);
-    setQuestions(res.data);
-  };
+    return () => { socket.off(); };
+  }, [code, navigate]);
 
   const handleSubmit = async () => {
     if (!q.trim()) return;
-    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/questions/submit`, {
-      sessionCode: code, studentId: user._id, studentName: user.name, text: q
-    });
-    socket.emit('new-question', { sessionCode: code, question: res.data });
-    setQ("");
-    setMyIndex(0);
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/questions/submit`, {
+        sessionCode: code, studentId: user._id, studentName: user.name, text: q
+      });
+      socket.emit('new-question', { sessionCode: code, question: res.data });
+      setQ("");
+      setMyIndex(0);
+    } catch (err) { alert("Failed"); }
   };
 
   const myQs = questions.filter(item => item.studentId === user._id).reverse();
@@ -42,48 +51,52 @@ export default function SessionStudentView() {
   return (
     <div className="full-page">
       <header className="navbar">
-        <button className="btn-3d btn-logout" onClick={() => navigate('/student')}>Exit</button>
-        <h2 style={{fontWeight: 900}}>STUDENT: {code}</h2>
-        <div style={{width: '80px'}}></div>
+        <button className="btn-3d btn-logout" style={{width:'auto'}} onClick={() => navigate('/student')}>Exit</button>
+        <h2 style={{fontWeight: 900}}>STUDENT PORTAL</h2>
+        <div style={{width:'80px'}}></div>
       </header>
 
       <div className="dashboard-layout">
         <aside className="sidebar">
-          <p className="sidebar-title">Global Class Feed</p>
+          <p style={{fontSize:'10px', letterSpacing:'2px', color:'#6c5ce7'}}>GLOBAL FEED</p>
           {questions.map((item, i) => (
-            <div key={i} className={`feed-item ${item.isAnswered ? 'answered-border' : ''}`}>
-              <span className="student-tag">{item.studentName}</span>
-              <p style={{margin: '5px 0'}}>{item.text}</p>
-              {item.isAnswered && <span className="answered-text">✓ ANSWERED</span>}
+            <div key={i} className={`feed-item ${item.isAnswered ? 'answered' : ''}`}>
+              <span style={{fontSize:'9px', color:'#aaa', display:'block'}}>{item.studentName}</span>
+              {item.text}
+              {item.isAnswered && (
+                 <div className="response-box" style={{padding:'10px'}}>
+                   <span style={{fontSize:'9px', color:'#2ecc71'}}>PROFESSOR RESPONSE</span>
+                   <p style={{fontSize:'12px', margin:0}}>{item.teacherResponse}</p>
+                 </div>
+              )}
             </div>
           ))}
         </aside>
 
         <main className="main-stage">
-          <div className="glass-card" style={{marginBottom: '20px'}}>
-            <h3>Ask the Professor</h3>
-            <textarea value={q} onChange={(e) => setQ(e.target.value)} placeholder="Type your query..." />
-            <button className="btn-3d btn-student" onClick={handleSubmit}>Send</button>
+          <div className="glass-card" style={{marginBottom: '30px'}}>
+            <h3 style={{color: '#00d2ff', marginBottom: '20px'}}>Submit Question</h3>
+            <textarea value={q} onChange={(e) => setQ(e.target.value)} placeholder="Type here..." />
+            <button className="btn-3d btn-student" style={{width:'100%'}} onClick={handleSubmit}>Send</button>
           </div>
 
-          <div className="glass-card" style={{borderLeft: '10px solid #6c5ce7'}}>
-            <p className="sidebar-title" style={{color: '#6c5ce7'}}>My Private Slides</p>
+          <div className="glass-card session-card" style={{borderLeft: '10px solid #00d2ff'}}>
+            <p style={{fontSize:'10px', color:'#00d2ff', fontWeight:900}}>MY PRIVATE LOG</p>
             {activeMyQ ? (
               <>
                 <p style={{margin: '15px 0', fontSize: '18px'}}>"{activeMyQ.text}"</p>
-                {activeMyQ.isAnswered ? (
+                {activeMyQ.isAnswered && (
                   <div className="response-box">
-                    <span className="response-label">Professor Response</span>
-                    <p>{activeMyQ.teacherResponse}</p>
+                    <p style={{fontSize:'14px', margin:0}}>{activeMyQ.teacherResponse}</p>
                   </div>
-                ) : <p className="pending-text">Waiting for Professor...</p>}
+                )}
                 <div style={{display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '20px'}}>
                   <button disabled={myIndex === 0} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex-1)}>Prev</button>
                   <span style={{display:'flex', alignItems:'center'}}>{myIndex + 1} / {myQs.length}</span>
                   <button disabled={myIndex === myQs.length-1} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex+1)}>Next</button>
                 </div>
               </>
-            ) : <p style={{color: '#444'}}>Ask a question to see your log.</p>}
+            ) : <p>No personal history yet.</p>}
           </div>
         </main>
       </div>
