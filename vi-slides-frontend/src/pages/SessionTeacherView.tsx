@@ -30,7 +30,7 @@ export default function SessionTeacherView() {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/sessions/end/${code}`);
       socket.emit('change-session-status', { sessionCode: code, status: 'ended' });
       navigate('/teacher');
-    } catch (err) { alert("Termination error"); }
+    } catch (err) { alert("Error"); }
   };
 
   const handleRespond = async () => {
@@ -42,12 +42,12 @@ export default function SessionTeacherView() {
       socket.emit('update-question', { sessionCode: code, question: res.data });
       setIsResponding(false);
       setResponseText("");
-    } catch (err) { alert("Response failed"); }
+    } catch (err) { alert("Error"); }
   };
 
   const copyCode = () => {
     navigator.clipboard.writeText(code || "");
-    alert("6-Digit Code Copied!");
+    alert("Copied to Clipboard!");
   };
 
   const activeQ = questions[activeIndex];
@@ -56,12 +56,12 @@ export default function SessionTeacherView() {
     <div className="full-page">
       <header className="navbar">
         <h2 style={{fontWeight: 900}}>PROFESSOR PANEL</h2>
-        <button className="btn-3d btn-logout" style={{width:'auto'}} onClick={handleTerminate}>Terminate Session 🛑</button>
+        <button className="btn-3d btn-logout" onClick={handleTerminate}>Terminate Session 🛑</button>
       </header>
 
       <div className="dashboard-layout">
         <aside className="sidebar">
-          <p style={{fontSize:'10px', letterSpacing:'2px', color:'#00d2ff'}}>LIVE QUEUE</p>
+          <p style={{fontSize:'10px', color:'#00d2ff', letterSpacing:'2px'}}>LIVE QUEUE</p>
           {questions.map((q, i) => (
             <div key={i} onClick={() => setActiveIndex(i)} className={`feed-item ${q.isAnswered ? 'answered' : ''}`} style={{cursor:'pointer', opacity: activeIndex === i ? 1 : 0.4}}>
               <span style={{fontSize:'9px', display:'block', color:'#aaa'}}>{q.studentName}</span>
@@ -72,8 +72,8 @@ export default function SessionTeacherView() {
 
         <main className="main-stage">
           <div className="projector-box" onClick={copyCode}>
-            <p style={{fontSize:'10px', color:'#555', margin:0}}>STUDENT ACCESS KEY</p>
             <h1 className="giant-code">{code}</h1>
+            <p className="copy-hint">Click digits to copy code</p>
           </div>
 
           <div className="glass-card session-card">
@@ -83,7 +83,6 @@ export default function SessionTeacherView() {
                 <h2 style={{margin:'20px 0'}}>"{activeQ.text}"</h2>
                 {activeQ.isAnswered && (
                   <div className="response-box">
-                    <span style={{fontSize:'10px', color:'#2ecc71', fontWeight:900}}>YOUR ANSWER</span>
                     <p style={{fontSize:'14px', margin:0}}>{activeQ.teacherResponse}</p>
                   </div>
                 )}

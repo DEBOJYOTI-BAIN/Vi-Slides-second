@@ -22,14 +22,7 @@ export default function SessionStudentView() {
     socket.emit('join-session', code);
     socket.on('question-added', (newQ) => setQuestions((prev) => [...prev, newQ]));
     socket.on('question-updated', (upQ) => setQuestions((prev) => prev.map(item => item._id === upQ._id ? upQ : item)));
-    
-    socket.on('session-status-changed', (status) => {
-      if (status === 'ended') {
-        alert("Professor has terminated the session.");
-        navigate('/student');
-      }
-    });
-
+    socket.on('session-status-changed', (status) => { if (status === 'ended') navigate('/student'); });
     return () => { socket.off(); };
   }, [code, navigate]);
 
@@ -41,7 +34,6 @@ export default function SessionStudentView() {
       });
       socket.emit('new-question', { sessionCode: code, question: res.data });
       setQ("");
-      setMyIndex(0);
     } catch (err) { alert("Failed"); }
   };
 
@@ -51,7 +43,7 @@ export default function SessionStudentView() {
   return (
     <div className="full-page">
       <header className="navbar">
-        <button className="btn-3d btn-logout" style={{width:'auto'}} onClick={() => navigate('/student')}>Exit</button>
+        <button className="btn-3d btn-logout" onClick={() => navigate('/student')}>Exit</button>
         <h2 style={{fontWeight: 900}}>STUDENT PORTAL</h2>
         <div style={{width:'80px'}}></div>
       </header>
@@ -63,21 +55,16 @@ export default function SessionStudentView() {
             <div key={i} className={`feed-item ${item.isAnswered ? 'answered' : ''}`}>
               <span style={{fontSize:'9px', color:'#aaa', display:'block'}}>{item.studentName}</span>
               {item.text}
-              {item.isAnswered && (
-                 <div className="response-box" style={{padding:'10px'}}>
-                   <span style={{fontSize:'9px', color:'#2ecc71'}}>PROFESSOR RESPONSE</span>
-                   <p style={{fontSize:'12px', margin:0}}>{item.teacherResponse}</p>
-                 </div>
-              )}
             </div>
           ))}
         </aside>
 
         <main className="main-stage">
           <div className="glass-card" style={{marginBottom: '30px'}}>
-            <h3 style={{color: '#00d2ff', marginBottom: '20px'}}>Submit Question</h3>
+            <h3>Submit Question</h3>
             <textarea value={q} onChange={(e) => setQ(e.target.value)} placeholder="Type here..." />
-            <button className="btn-3d btn-student" style={{width:'100%'}} onClick={handleSubmit}>Send</button>
+            {/* THE FIX: btn-submit keeps this compact */}
+            <button className="btn-3d btn-student btn-submit" onClick={handleSubmit}>Send</button>
           </div>
 
           <div className="glass-card session-card" style={{borderLeft: '10px solid #00d2ff'}}>
@@ -85,18 +72,13 @@ export default function SessionStudentView() {
             {activeMyQ ? (
               <>
                 <p style={{margin: '15px 0', fontSize: '18px'}}>"{activeMyQ.text}"</p>
-                {activeMyQ.isAnswered && (
-                  <div className="response-box">
-                    <p style={{fontSize:'14px', margin:0}}>{activeMyQ.teacherResponse}</p>
-                  </div>
-                )}
                 <div style={{display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '20px'}}>
                   <button disabled={myIndex === 0} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex-1)}>Prev</button>
                   <span style={{display:'flex', alignItems:'center'}}>{myIndex + 1} / {myQs.length}</span>
                   <button disabled={myIndex === myQs.length-1} className="btn-3d" style={{background: '#333'}} onClick={() => setMyIndex(myIndex+1)}>Next</button>
                 </div>
               </>
-            ) : <p>No personal history yet.</p>}
+            ) : <p>No history yet.</p>}
           </div>
         </main>
       </div>
