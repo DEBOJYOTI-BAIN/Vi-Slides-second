@@ -17,20 +17,25 @@ export default function TeacherDashboard() {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/sessions/create`, { teacherId: user._id });
       navigate(`/teacher-session/${res.data.sessionCode}`);
-    } catch (err) { alert("Creation Error"); }
+    } catch (err) { alert("Server Error"); }
   };
 
   return (
     <div className="full-page">
       <header className="navbar">
-        <h2 style={{ color: '#00d2ff', fontWeight: 900 }}>PORTAL</h2>
-        <button className="btn-3d btn-logout" style={{ width: 'auto', padding: '10px 20px' }} onClick={() => { localStorage.clear(); navigate('/'); }}>Logout</button>
+        <h2 style={{fontWeight: 900, color: '#00d2ff'}}>PROFESSOR</h2>
+        <button className="btn-3d btn-logout" style={{width: 'auto', padding: '10px 20px'}} onClick={() => {localStorage.clear(); navigate('/')}}>Logout</button>
       </header>
+      
       <main className="centered-container">
+        {/* COMPACT RECTANGULAR CARD */}
         <div className="glass-card">
-          <h1 style={{ fontSize: '36px' }}>Welcome, {name}</h1>
-          <p style={{ color: '#aaa', marginBottom: '40px' }}>Ready to start an interactive session?</p>
-          <button className="btn-3d btn-teacher" onClick={handleStart}>+ Start New Class</button>
+          <h1 style={{fontSize: '32px', marginBottom: '10px'}}>Welcome, {name}</h1>
+          <p style={{color: '#aaa', marginBottom: '40px', fontSize: '14px'}}>Ready to lead an adaptive class?</p>
+          
+          <button className="btn-3d btn-teacher btn-compact" onClick={handleStart}>
+            + Start New Session
+          </button>
         </div>
       </main>
     </div>
